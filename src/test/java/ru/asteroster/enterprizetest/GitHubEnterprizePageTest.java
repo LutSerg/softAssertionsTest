@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class GitHubEnterprizePageTest {
@@ -15,14 +16,16 @@ public class GitHubEnterprizePageTest {
     static void beforeAll() {
         Configuration.pageLoadStrategy = "eager";
         Configuration.browserSize = "1920x1080";
-        Configuration.holdBrowserOpen = true;
-//        Configuration.baseUrl = "https://github.com/";
     }
 
     @Test
     void enterprizePageTest() {
         open("https://github.com/");
          $(".HeaderMenu-nav").$(byText("Solutions")).hover();
-         $(".HeaderMenu-dropdown ul li").$(byText("Enterprises")).click();
+         $$(".HeaderMenu-nav ul li").findBy(text("Solutions"))
+                 .$(".HeaderMenu-dropdown").shouldHave(text("Enterprises"));
+         $$(".HeaderMenu-nav ul li").findBy(text("Solutions"))
+                .$$("ul li").findBy(text("Enterprises")).click();
+         $("#hero-section-brand-heading").shouldHave(text("The AI-powered" + " " + "developer platform"));
     }
 }
